@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.util.Duration.millis;
+
 
 /**
  * Serwer prostego systemu "czat".
@@ -58,10 +58,35 @@ public class ServerMain {
              */
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from : " + clientSocket);
-            // teraz trzeba pobrać Output Stream
-            OutputStream outputStream = clientSocket.getOutputStream();
+            
+            // Create new thread and pass it the connection to client
+            Thread t = new Thread() {
+                // w ten sposób rozszerzamy klasę/obiekt
+                @Override
+                public void run() {
+                    try {
+                        handleClientSocket(clientSocket);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            // Ponieważ to jest tak naprawdę deklaracja to ; musi być
+            };
+            // tu dopiero startujemy nowy wątek
+            t.start();
+            }
+        } catch (IOException ex) {
+            System.out.println("IO Error: " + ex.toString());
+            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
+    OutputStream outputStream = clientSocket.getOutputStream();
             // możemy coś napisać do out stream:
-            outputStream.write("Hello World\n".getBytes());
+            // outputStream.write("Hello World\n".getBytes());
             // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
             // wysyłamy przez 10 sek. aktualną datę.
             // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
@@ -71,12 +96,5 @@ public class ServerMain {
                         }
             clientSocket.close();
             }
-        } catch (IOException ex) {
-            System.out.println("IO Error: " + ex.toString());
-            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
 }
