@@ -82,7 +82,7 @@ public class ServerMain {
                         Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            // Ponieważ to jest tak naprawdę deklaracja to ; musi być
+            // Ponieważ to jest tak naprawdę deklaracja to ";" musi być
             };
             // tu dopiero startujemy nowy wątek
             t.start();
@@ -93,6 +93,17 @@ public class ServerMain {
         }
     }
     
+    /**
+     * Metoda do obsługi kolejnych żądań od klientów.
+     * 
+     * static na razie załatwia sprawę wątków. Wygląda na funkcję tread-safe
+     * i re-entrant - nie korzysta ze zmiennych zewnętrznych i wywołuje Thread.sleep
+     * który jest wątkowo-bezpieczny.
+     * 
+     * @param clientSocket Referencja do gniazda zwróconego przez accept()
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
     OutputStream outputStream = clientSocket.getOutputStream();
             // możemy coś napisać do out stream:
@@ -101,6 +112,7 @@ public class ServerMain {
             // wysyłamy przez 10 sek. aktualną datę.
             // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
             for (int i=0; i<10; i++) {
+                //FIXME W Windows CR+LF przesuwa kolejne linię o długość poprzedniej
                 outputStream.write(("Time is now "+ new Date() + "\n").getBytes());
                     Thread.sleep(1000);
                         }
