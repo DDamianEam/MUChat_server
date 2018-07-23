@@ -105,7 +105,7 @@ public class ServerMain {
      * @throws InterruptedException 
      */
     private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
-    OutputStream outputStream = clientSocket.getOutputStream();
+    OutputStream  outputStream = clientSocket.getOutputStream();
             // możemy coś napisać do out stream:
             // outputStream.write("Hello World\n".getBytes());
             // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
