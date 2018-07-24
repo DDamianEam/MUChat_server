@@ -23,6 +23,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The class takes the handling of client requests off the main server class.
+ * 
+ * The main thread is thus free to accept new requests.
  * 
  * @author Damian Duda <damian.duda@gmail.com>
  */
@@ -35,7 +38,7 @@ public class ServerWorker extends Thread {
     }
     
     /**
-     * Every thread has a run method
+     * Every thread has a run method...
      */
     @Override
     public void run(){
@@ -52,9 +55,7 @@ public class ServerWorker extends Thread {
      * 
      * It doesn't be static.
      * 
-     * Metoda do obsługi kolejnych żądań od klientów.
-     * 
-     * @param clientSocket Referencja do gniazda zwróconego przez accept()
+     * @param clientSocket Reference to socket given by accept()
      * @throws IOException
      * @throws InterruptedException 
      */

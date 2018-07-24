@@ -16,25 +16,24 @@
 package com.muc;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
  
 
 /**
- * Serwer prostego systemu "czat".
+ * Simple chat server.
  * 
- * Wersja wielowątkowa (multithread concurrent server).
+ * Multithread concurrent server version.
  * 
- * The client's requests are handled using static method.
+ * The client's requests are handled using worker class/object ext Thread.
  * Very simplistic.
  * 
  * TODO Single line logs
  * TODO Check static logs with dynamic workers.
- * version 0.2
+ * version 0.3
+ * 
  * @author Damian Duda <damian.duda@gmail.com>
  */
 public class ServerMain {
@@ -86,7 +85,4 @@ public class ServerMain {
             Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
- 
-    
 }
