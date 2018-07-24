@@ -15,7 +15,12 @@
  */
 package com.muc;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -29,5 +34,43 @@ public class ServerWorker extends Thread {
         this.clientSocket = clientSocket;
     }
     
+    /**
+     * Every thread has a run method
+     */
+    @Override
+    public void run(){
+        try {
+            handleClientSocket();
+        } catch (IOException ex) {
+            Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+           /**
+     * Do something with connected client.
+     * 
+     * It doesn't be static.
+     * 
+     * Metoda do obsługi kolejnych żądań od klientów.
+     * 
+     * @param clientSocket Referencja do gniazda zwróconego przez accept()
+     * @throws IOException
+     * @throws InterruptedException 
+     */
+    private void handleClientSocket() throws IOException, InterruptedException {
+        OutputStream  outputStream = clientSocket.getOutputStream();
+        // możemy coś napisać do out stream:
+        // outputStream.write("Hello World\n".getBytes());
+        // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
+        // wysyłamy przez 10 sek. aktualną datę.
+        // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
+        for (int i=0; i<10; i++) {
+            //FIXME W Windows CR+LF przesuwa kolejne linię o długość poprzedniej
+            outputStream.write(("Time is now "+ new Date() + "\n").getBytes());
+            Thread.sleep(1000);
+        }
+        clientSocket.close();
+    }
     
 }
