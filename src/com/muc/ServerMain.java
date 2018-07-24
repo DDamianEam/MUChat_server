@@ -72,29 +72,11 @@ public class ServerMain {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from : " + clientSocket);
             
-            // Create new thread and pass it the connection to client.
+            // New threads are handled by ServerWorker now
             // Leave the main thread free to accept consecutive calls.
-            // This is example of extending the object from Thread class
-            Thread t = new Thread() {
-                
-                /**
-                 * Here we cover the run method from Thread class.
-                 * 
-                 * The thread lives completely in the run method.
-                 * When handleClientSocket ends then thread also.
-                 */
-                @Override
-                public void run() {
-                    try {
-                        handleClientSocket(clientSocket);
-                    } catch (IOException | InterruptedException ex) {
-                        Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            // Ponieważ to jest tak naprawdę deklaracja to ";" musi być
-            };
-            // tu dopiero startujemy nowy wątek
-            t.start();
+            ServerWorker worker = new ServerWorker(clientSocket);
+            // it can be started as it is a child of the Thread:
+            worker.start();
             }
         } catch (IOException ex) {
             System.out.println("IO Error: " + ex.toString());
@@ -102,33 +84,6 @@ public class ServerMain {
         }
     }
     
-    /**
-     * Do something with connected client.
-     * 
-     * For simplicity the static method.
-     * Metoda do obsługi kolejnych żądań od klientów.
-     * 
-     * static na razie załatwia sprawę wątków. Wygląda na funkcję tread-safe
-     * i re-entrant - nie korzysta ze zmiennych zewnętrznych i wywołuje Thread.sleep
-     * który jest wątkowo-bezpieczny.
-     * 
-     * @param clientSocket Referencja do gniazda zwróconego przez accept()
-     * @throws IOException
-     * @throws InterruptedException 
-     */
-    private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
-    OutputStream  outputStream = clientSocket.getOutputStream();
-            // możemy coś napisać do out stream:
-            // outputStream.write("Hello World\n".getBytes());
-            // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
-            // wysyłamy przez 10 sek. aktualną datę.
-            // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
-            for (int i=0; i<10; i++) {
-                //FIXME W Windows CR+LF przesuwa kolejne linię o długość poprzedniej
-                outputStream.write(("Time is now "+ new Date() + "\n").getBytes());
-                    Thread.sleep(1000);
-                        }
-            clientSocket.close();
-            }
+ 
     
 }
