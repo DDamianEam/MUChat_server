@@ -22,7 +22,7 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+ 
 
 /**
  * Serwer prostego systemu "czat".
@@ -70,8 +70,15 @@ public class ServerMain {
             System.out.println("Accepted connection from : " + clientSocket);
             
             // Create new thread and pass it the connection to client
+            // This is example of extending the object from Thread class
             Thread t = new Thread() {
-                // w ten sposób rozszerzamy klasę/obiekt
+                
+                /**
+                 * Here we cover the run method from Thread class.
+                 * 
+                 * The thread lives completely in the run method.
+                 * When handleClientSocket ends then thread also.
+                 */
                 @Override
                 public void run() {
                     try {
@@ -82,7 +89,7 @@ public class ServerMain {
                         Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            // Ponieważ to jest tak naprawdę deklaracja to ; musi być
+            // Ponieważ to jest tak naprawdę deklaracja to ";" musi być
             };
             // tu dopiero startujemy nowy wątek
             t.start();
