@@ -106,8 +106,6 @@ public class ServerMain {
      * Do something with connected client.
      * 
      * For simplicity the static method.
-     * 
-     * @param clientSocket
      * Metoda do obsługi kolejnych żądań od klientów.
      * 
      * static na razie załatwia sprawę wątków. Wygląda na funkcję tread-safe
