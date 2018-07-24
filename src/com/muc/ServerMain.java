@@ -26,14 +26,16 @@ import java.util.logging.Logger;
  * Simple chat server.
  * 
  * Multithread concurrent server version.
- * 
  * The client's requests are handled using worker class/object ext Thread.
  * Very simplistic.
+ * NOT for production use - this is only a proof o concept.
  * 
  * TODO Single line logs
  * TODO Check static logs with dynamic workers.
  * version 0.3
  * 
+ * Based on YouTube video by Jim Liao - JimOnDemand
+ * (https://www.youtube.com/watch?v=cRfsUrU3RjE)
  * @author Damian Duda <damian.duda@gmail.com>
  */
 public class ServerMain {
