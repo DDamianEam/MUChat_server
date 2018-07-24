@@ -15,10 +15,19 @@
  */
 package com.muc;
 
+import java.net.Socket;
+
 /**
- *
+ * 
  * @author Damian Duda <damian.duda@gmail.com>
  */
-public class ServerWorker {
+public class ServerWorker extends Thread {
+
+    private final Socket clientSocket;
+    
+    public ServerWorker(Socket clientSocket){
+        this.clientSocket = clientSocket;
+    }
+    
     
 }
