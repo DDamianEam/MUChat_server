@@ -108,17 +108,25 @@ public class ServerMain {
      * For simplicity the static method.
      * 
      * @param clientSocket
+     * Metoda do obsługi kolejnych żądań od klientów.
+     * 
+     * static na razie załatwia sprawę wątków. Wygląda na funkcję tread-safe
+     * i re-entrant - nie korzysta ze zmiennych zewnętrznych i wywołuje Thread.sleep
+     * który jest wątkowo-bezpieczny.
+     * 
+     * @param clientSocket Referencja do gniazda zwróconego przez accept()
      * @throws IOException
      * @throws InterruptedException 
      */
     private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
-    OutputStream outputStream = clientSocket.getOutputStream();
+    OutputStream  outputStream = clientSocket.getOutputStream();
             // możemy coś napisać do out stream:
             // outputStream.write("Hello World\n".getBytes());
             // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
             // wysyłamy przez 10 sek. aktualną datę.
             // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
             for (int i=0; i<10; i++) {
+                //FIXME W Windows CR+LF przesuwa kolejne linię o długość poprzedniej
                 outputStream.write(("Time is now "+ new Date() + "\n").getBytes());
                     Thread.sleep(1000);
                         }
