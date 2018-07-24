@@ -29,6 +29,9 @@ import java.util.logging.Logger;
  * 
  * Wersja wielowątkowa (multithread concurrent server).
  * 
+ * The client's requests are handled using static method.
+ * Very simplistic.
+ * 
  * version 0.2
  * @author Damian Duda <damian.duda@gmail.com>
  */
@@ -69,7 +72,8 @@ public class ServerMain {
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from : " + clientSocket);
             
-            // Create new thread and pass it the connection to client
+            // Create new thread and pass it the connection to client.
+            // Leave the main thread free to accept consecutive calls.
             // This is example of extending the object from Thread class
             Thread t = new Thread() {
                 
@@ -83,9 +87,7 @@ public class ServerMain {
                 public void run() {
                     try {
                         handleClientSocket(clientSocket);
-                    } catch (IOException ex) {
-                        Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InterruptedException ex) {
+                    } catch (IOException | InterruptedException ex) {
                         Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -100,6 +102,15 @@ public class ServerMain {
         }
     }
     
+    /**
+     * Do something with connected client.
+     * 
+     * For simplicity the static method.
+     * 
+     * @param clientSocket
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     private static void handleClientSocket(Socket clientSocket ) throws IOException, InterruptedException {
     OutputStream outputStream = clientSocket.getOutputStream();
             // możemy coś napisać do out stream:
