@@ -41,16 +41,19 @@ import java.util.logging.Logger;
  */
 public class ServerMain {
     
+    // Logger as in skill training
+        private static final Logger LOGGER = Logger.getLogger("com.skill.logdemo");
+        // The logger reads config from file logging.properties
+        // set this using: -Djava.util.logging.config.file
+        
+    
     public static void main(String[] args){
         int port = 8818;
-        
-        // Logger as in Oracle training
-        // private static final Logger logger = Logger.getLogger("com.oracle.logdemo");
-        // The logger reads config from file logging.properties
+               
         // We can set logging outside the logging.properties
-        //                logger.setLevel(Level.INFO);
+        LOGGER.setLevel(Level.INFO);
         // And logging at last
-        //        logger.log(Level.INFO, "Hello logger!");
+        LOGGER.log(Level.INFO, "MUChat started...");
         try {
             ServerSocket serverSocket = new ServerSocket(port);            
             while(true) { 
@@ -83,7 +86,7 @@ public class ServerMain {
              */
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from : " + clientSocket);
-            Logger.getLogger(ServerMain.class.getName()).log(Level.INFO, "Accepted connection from : {0}", clientSocket.toString());
+            // Logger.getLogger(ServerMain.class.getName()).log(Level.INFO, "Accepted connection from : {0}", clientSocket.toString());
             
             // New threads are handled by ServerWorker now
             // Leave the main thread free to accept consecutive calls.
@@ -93,7 +96,7 @@ public class ServerMain {
             }
         } catch (IOException ex) {
             System.out.println("IO Error: " + ex.toString());
-            Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+            // Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
