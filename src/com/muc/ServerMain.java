@@ -86,7 +86,11 @@ public class ServerMain {
              */
             Socket clientSocket = serverSocket.accept();
             System.out.println("Accepted connection from : " + clientSocket);
-            // Logger.getLogger(ServerMain.class.getName()).log(Level.INFO, "Accepted connection from : {0}", clientSocket.toString());
+            // Logger.getLogger(ServerMain.class.getName()).log(Level.INFO, "Accepted connection from : {0}", clientSocket.toString);
+            if(LOGGER.isLoggable(Level.INFO)) {
+                LOGGER.log(Level.INFO, "Accepted connection from : {0}", clientSocket.toString());
+            }
+            
             
             // New threads are handled by ServerWorker now
             // Leave the main thread free to accept consecutive calls.
