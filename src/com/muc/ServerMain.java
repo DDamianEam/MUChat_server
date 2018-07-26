@@ -43,6 +43,14 @@ public class ServerMain {
     
     public static void main(String[] args){
         int port = 8818;
+        
+        // Logger as in Oracle training
+        // private static final Logger logger = Logger.getLogger("com.oracle.logdemo");
+        // The logger reads config from file logging.properties
+        // We can set logging outside the logging.properties
+        //                logger.setLevel(Level.INFO);
+        // And logging at last
+        //        logger.log(Level.INFO, "Hello logger!");
         try {
             ServerSocket serverSocket = new ServerSocket(port);            
             while(true) { 
