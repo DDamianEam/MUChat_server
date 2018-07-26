@@ -32,6 +32,7 @@ import java.util.logging.Logger;
  * 
  * TODO Single line logs
  * TODO Check static logs with dynamic workers.
+ * TODO Multiplexing I/O.
  * version 0.3
  * 
  * Based on YouTube video by Jim Liao - JimOnDemand
