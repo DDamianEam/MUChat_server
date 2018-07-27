@@ -13,3 +13,5 @@ Create new project in NetBeans:
 - add package sources - the src directory from clonned repo;
 
 The NetBeans should scan&detect the project files.
+
+The original project files for IntelliJ are at http://objectzen.com/ep1
