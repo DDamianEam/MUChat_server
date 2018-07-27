@@ -15,7 +15,10 @@
  */
 package com.muc;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Date;
@@ -60,17 +63,32 @@ public class ServerWorker extends Thread {
      * @throws InterruptedException 
      */
     private void handleClientSocket() throws IOException, InterruptedException {
-        OutputStream  outputStream = clientSocket.getOutputStream();
-        // możemy coś napisać do out stream:
-        // outputStream.write("Hello World\n".getBytes());
-        // Żeby zobaczyć problem z "accept", tj. jednozadaniowość
-        // wysyłamy przez 10 sek. aktualną datę.
-        // Wtedy każdy nowy klient będzie oczekiwał na koniec obsługi
-        for (int i=0; i<10; i++) {
-            //FIXME W Windows CR+LF przesuwa kolejne linię o długość poprzedniej
-            outputStream.write(("Time is now "+ new Date() + "\n").getBytes());
-            Thread.sleep(1000);
+        
+        // We have socket here, so can talk with client bi-directionally
+        /* public InputStream getInputStream() throws IOException
+         * Returns an input stream for this socket.
+         * public OutputStream getOutputStream() throws IOException
+         * Returns an output stream for this socket.
+         */
+        InputStream inputStream = clientSocket.getInputStream();
+        OutputStream outputStream = clientSocket.getOutputStream();
+        
+        // BufferedReader for reading line-by-line
+        // And InpuStreamReader which creates an InputStreamReader that uses
+        // the default charset.
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        
+        String line;
+        // read line and check the result of statement
+        while((line = reader.readLine()) != null){
+            if("quit".equalsIgnoreCase(line)){
+                break;
+            }
+            // send "echo"
+            String msg = "You typed: " + line + "\n";
+            outputStream.write(msg.getBytes());
         }
+        
         clientSocket.close();
     }
     
