@@ -1,0 +1,21 @@
+MUChat server protocols
+
+Parties: User, Server
+
+1. User -> Server
+    * login / logoff
+    * status
+
+2. Server -> User
+    * a user goes online / offline
+
+3. User -> User
+    * direct messages
+    * broadcast messages
+
+Commands:
+    login <user> <password>
+    logoff
+
+
+Uses Apache Commons Lang to token splitting.
