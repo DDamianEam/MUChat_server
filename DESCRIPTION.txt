@@ -1,1 +1,13 @@
+Project files: http://objectzen.com/ep1
+
+Summary:
+    * ServerSocket --> accept() connection
+    * we get Socket (client), and we can get bi-directional communicatons with client
+        --> getOutputStream()  [Output: Server to Client]
+        --> getInputStream()  [Input: what Server reads]
+
+    * Worker thread to handle client connections
+        -- leaves main thread to accept new connections
+
+    * Accept multiple connections
 

@@ -10,7 +10,7 @@ Parties: User, Server
     * a user goes online / offline
 
 3. User -> User
-    * direct messages
+    * direct messages 
     * broadcast messages
 
 Commands:
