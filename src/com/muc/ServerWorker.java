@@ -24,11 +24,18 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The class takes the handling of client requests off the main server class.
  * 
  * The main thread is thus free to accept new requests.
+ * 
+ * Dep: commons-lang3-3.7:
+ * Maven:
+  groupId: org.apache.commons
+  artifactId: commons-lang3
+  version: 3.7
  * 
  * @author Damian Duda <damian.duda@gmail.com>
  */
@@ -81,14 +88,35 @@ public class ServerWorker extends Thread {
         String line;
         // read line and check the result of statement
         while((line = reader.readLine()) != null){
-            if("quit".equalsIgnoreCase(line)){
-                break;
+            
+            // enhance logic to understand more commands
+            
+            /* Use Apache Commons Lang
+              https://commons.apache.org/
+              Provides extra functionality for classes in java.lang.
+              v. 3.6, 2017-06-08
+              public static String[] split(String str) 
+                Splits the provided text into an array, using whitespace
+                as the separator. Whitespace is defined by
+                Character.isWhitespace(char).
+            */
+            String[] tokens = StringUtils.split(line);
+            
+            // Evade Null-Pointer exceptions
+            if(tokens != null & tokens.length > 0) {
+            
+                // First tokes is a command
+                String cmd = tokens[0];
+            
+                if ("quit".equalsIgnoreCase(cmd)) {
+                    break;
+                } else {
+                    String msg = "unknown" + cmd + "\n";
+                    outputStream.write(msg.getBytes());
+                }
+
             }
-            // send "echo"
-            String msg = "You typed: " + line + "\n";
-            outputStream.write(msg.getBytes());
         }
-        
         clientSocket.close();
     }
     

@@ -2,16 +2,21 @@ MUChat server protocols
 
 Parties: User, Server
 
+Communications/dialogs:
+
 1. User -> Server
     * login / logoff
     * status
 
 2. Server -> User
-    * a user goes online / offline
+    * a user goes online / offline message
 
 3. User -> User
-    * direct messages 
-    * broadcast messages
+    * direct messages (priv user data)
+    * broadcast messages (to all users)
+
+
+Details
 
 Commands:
     login <user> <password>
@@ -19,3 +24,4 @@ Commands:
 
 
 Uses Apache Commons Lang to token splitting.
+StringUtils.split
