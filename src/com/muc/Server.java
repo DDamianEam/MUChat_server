@@ -8,6 +8,8 @@ package com.muc;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,9 +24,29 @@ public class Server extends Thread {
         // set this using: -Djava.util.logging.config.file
     
     private final int serverPort;
+    
+    /*
+     Resizable-array implementation of the List interface.
+     Implements all optional list operations, and permits all elements,
+     including null. In addition to implementing the List interface,
+     this class provides methods to manipulate the size of the array 
+     that is used internally to store the list.
+     This class is roughly equivalent to Vector, except that it is
+     unsynchronized.
+    */
+    private ArrayList<ServerWorker> workerList = new ArrayList<>();
+    
+    // public bo chcemy mieć dostęp z innych klas
 
-    Server(int serverPort) {
+    public Server(int serverPort) {
         this.serverPort = serverPort;
+    }
+    
+    // lista aktualnych połączeń
+    // Żeby mieć dostęp do serverWorkers z innych serverWorkers    
+    public List<ServerWorker> getWorkerList(){
+        
+        return workerList;
     }
     
     @Override
@@ -66,7 +88,9 @@ public class Server extends Thread {
 
                 // New threads are handled by ServerWorker now
                 // Leave the main thread free to accept consecutive calls.
-                ServerWorker worker = new ServerWorker(clientSocket);
+                // To access server we need to also pass a "server"
+                ServerWorker worker = new ServerWorker(this, clientSocket);
+                workerList.add(worker);
                 // it can be started as it is a child of the Thread:
                 worker.start();
             }
