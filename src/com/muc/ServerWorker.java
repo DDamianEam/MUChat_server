@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +41,8 @@ import org.apache.commons.lang3.StringUtils;
 public class ServerWorker extends Thread {
 
     private final Socket clientSocket;
-    
+    // We need variable for login state
+    private String login = null;
     public ServerWorker(Socket clientSocket){
         this.clientSocket = clientSocket;
     }
@@ -105,19 +105,47 @@ public class ServerWorker extends Thread {
             // Evade Null-Pointer exceptions
             if(tokens != null & tokens.length > 0) {
             
-                // First tokes is a command
+                // First token should be a command
                 String cmd = tokens[0];
             
                 if ("quit".equalsIgnoreCase(cmd)) {
                     break;
-                } else {
-                    String msg = "unknown" + cmd + "\n";
+                }
+                // handle login command
+                else if("login".equalsIgnoreCase(cmd)) {
+                    // pass to another method
+                    handleLogin(outputStream, tokens);
+                }
+                else {
+                    String msg = "unknown command: " + cmd + "\n";
                     outputStream.write(msg.getBytes());
                 }
 
             }
         }
         clientSocket.close();
+    }
+
+    private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
+        if(tokens.length == 3){
+            // user's login
+            String login = tokens[1];
+            String password = tokens[2];
+            
+            if((login.equals("guest") && password.equals("guest")) || (login.equals("jim") && password.equals("jim"))){
+                String msg = "ok login\n";
+                outputStream.write(msg.getBytes());
+                this.login = login;
+                System.out.println("User logged in successfully: " + login);
+            }
+            else {
+                String msg = "error login\n";
+                outputStream.write(msg.getBytes());
+            }
+            
+            
+        }
+        
     }
     
 }
