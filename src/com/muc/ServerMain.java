@@ -27,13 +27,16 @@ import java.util.logging.Logger;
  * Very simplistic.
  * NOT for production use - this is only a proof o concept.
  * 
- * TODO Single line logs
- * TODO Check static logs with dynamic workers.
- * TODO Multiplexing I/O.
+ * Does not broadcast message with logged-in users to new user
+ * TODO (Done) Check static logs with dynamic workers.
+ * TODO (In progress) Multiplexing I/O.
+ * TODO Convert project to Maven.
  * version 0.3
  * 
  * Based on YouTube video by Jim Liao - JimOnDemand
  * (https://www.youtube.com/watch?v=cRfsUrU3RjE)
+ * Part 1, Done
+ * Part 2, 7:18
  * @author Damian Duda <damian.duda@gmail.com>
  */
 public class ServerMain {
@@ -50,7 +53,8 @@ public class ServerMain {
         // We need access to all current connections, so new instance is needed
         Server server = new Server(port);
         
-        server.start();  // this starts thread and "run" method
+        server.start();  // this starts thread and also "run" method
+        
         // We can set logging outside the logging.properties
         LOGGER.setLevel(Level.INFO);
         // And logging at last

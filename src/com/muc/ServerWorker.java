@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +44,14 @@ public class ServerWorker extends Thread {
     private final Socket clientSocket;
     // We need variable for login state
     private String login = null;
-    public ServerWorker(Socket clientSocket){
+    // Needed to send messages to different logged-in users
+    private final Server server;
+    // outputStream has to be shared
+    private OutputStream outputStream;
+    
+    // Constructor
+    public ServerWorker(Server server, Socket clientSocket){
+        this.server = server;
         this.clientSocket = clientSocket;
     }
     
@@ -78,7 +86,8 @@ public class ServerWorker extends Thread {
          * Returns an output stream for this socket.
          */
         InputStream inputStream = clientSocket.getInputStream();
-        OutputStream outputStream = clientSocket.getOutputStream();
+        // outputStream has to be shared
+        this.outputStream = clientSocket.getOutputStream();
         
         // BufferedReader for reading line-by-line
         // And InpuStreamReader which creates an InputStreamReader that uses
@@ -126,6 +135,17 @@ public class ServerWorker extends Thread {
         clientSocket.close();
     }
 
+    public String getLogin(){
+        return login;
+    }
+    
+    /**
+     * Send the message to each logged-in user.
+     * 
+     * @param outputStream
+     * @param tokens
+     * @throws IOException 
+     */
     private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
         if(tokens.length == 3){
             // user's login
@@ -137,6 +157,14 @@ public class ServerWorker extends Thread {
                 outputStream.write(msg.getBytes());
                 this.login = login;
                 System.out.println("User logged in successfully: " + login);
+                
+                String onlineMsg = "online: " + login + "\n"; 
+                // get logged-in users
+                List<ServerWorker> workerList = server.getWorkerList();
+                // Broadcast message to each logged-in user on a user login
+                for(ServerWorker worker: workerList){
+                    worker.send(onlineMsg);
+                }
             }
             else {
                 String msg = "error login\n";
@@ -146,6 +174,17 @@ public class ServerWorker extends Thread {
             
         }
         
+    }
+
+    /**
+     * Throws IOException which propagates up to ServerMain.
+     * 
+     * @param onlineMsg
+     * @throws IOException 
+     */
+    private void send(String msg) throws IOException {
+        // access the outputStream
+        outputStream.write(msg.getBytes());
     }
     
 }
