@@ -31,6 +31,8 @@ import java.util.logging.Logger;
  * TODO (Done) Check static logs with dynamic workers.
  * TODO (In progress) Multiplexing I/O.
  * TODO Convert project to Maven.
+ * TODO Check static logs with dynamic workers.
+ * TODO Multiplexing I/O.
  * version 0.3
  * 
  * Based on YouTube video by Jim Liao - JimOnDemand
