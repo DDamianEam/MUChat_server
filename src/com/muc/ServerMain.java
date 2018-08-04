@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  * Based on YouTube video by Jim Liao - JimOnDemand
  * (https://www.youtube.com/watch?v=cRfsUrU3RjE)
  * Part 1, Done
- * Part 2, 7:18
+ * Part 2, 12:45
  * @author Damian Duda <damian.duda@gmail.com>
  */
 public class ServerMain {
