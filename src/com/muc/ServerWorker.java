@@ -79,7 +79,7 @@ public class ServerWorker extends Thread {
            /**
      * Do something with connected client.
      * 
-     * It doesn't be static.
+     * It doesn't need to be static.
      * 
      * @param clientSocket Reference to socket given by accept()
      * @throws IOException
@@ -165,6 +165,11 @@ public class ServerWorker extends Thread {
                 outputStream.write(msg.getBytes());
                 this.login = login;
                 System.out.println("User logged in successfully: " + login);
+                
+                // Static logging:
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.log(Level.INFO, "User: {0} logged in successfully", login.toString());
+                }
                 
                 String onlineMsg = "online: " + login + "\n"; 
                 // get logged-in users
