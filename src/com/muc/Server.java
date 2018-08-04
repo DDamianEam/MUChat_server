@@ -95,8 +95,13 @@ public class Server extends Thread {
                 worker.start();
             }
         } catch (IOException ex) {
-            System.out.println("IO Error: " + ex.toString());
+            //System.out.println("IO Error: " + ex.toString());
+            // Dynamic version:
             // Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+            // Static version:
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                    LOGGER.log(Level.SEVERE, "Accept error: {0}", ex.toString());
+                }
         }
     }
     
