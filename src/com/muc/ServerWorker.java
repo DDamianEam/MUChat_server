@@ -160,15 +160,18 @@ public class ServerWorker extends Thread {
             String login = tokens[1];
             String password = tokens[2];
             
-            if((login.equals("guest") && password.equals("guest")) || (login.equals("jim") && password.equals("jim"))){
+            if((    login.equals("guest") && password.equals("guest")) 
+                || (login.equals("jim") && password.equals("jim"))){
+                
                 String msg = "ok login\n";
                 outputStream.write(msg.getBytes());
+                // Logged-in user name for this thread
                 this.login = login;
                 System.out.println("User logged in successfully: " + login);
                 
                 // Static logging:
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(Level.INFO, "User: {0} logged in successfully", login.toString());
+                    LOGGER.log(Level.INFO, "User: {0} logged in successfully", login);
                 }
                 
                 String onlineMsg = "online: " + login + "\n"; 
@@ -182,6 +185,10 @@ public class ServerWorker extends Thread {
             else {
                 String msg = "error login\n";
                 outputStream.write(msg.getBytes());
+                // Static logging:
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.log(Level.INFO, "User: {0} login error", login);
+                }
             }
             
             
