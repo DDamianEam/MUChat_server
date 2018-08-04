@@ -49,6 +49,9 @@ public class ServerWorker extends Thread {
     // outputStream has to be shared
     private OutputStream outputStream;
     
+    // Log
+    private static final Logger LOGGER = Logger.getLogger("com.muc.ServerWorker");
+    
     // Constructor
     public ServerWorker(Server server, Socket clientSocket){
         this.server = server;
@@ -63,7 +66,12 @@ public class ServerWorker extends Thread {
         try {
             handleClientSocket();
         } catch (IOException ex) {
-            Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
+            // Dynamic logging
+            // Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
+            // Static logging:
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                    LOGGER.log(Level.SEVERE, "handleClientSocket: {0}", ex.toString());
+                }
         } catch (InterruptedException ex) {
             Logger.getLogger(ServerWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
