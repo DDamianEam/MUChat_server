@@ -197,6 +197,8 @@ public class ServerWorker extends Thread {
     }
 
     /**
+     * Sends string message through shared output stream.
+     * 
      * Throws IOException which propagates up to ServerMain.
      * 
      * @param onlineMsg
